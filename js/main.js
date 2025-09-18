@@ -54,4 +54,22 @@ window.addEventListener('click', function(event) {
             closeModal(modal.id);
         }
     });
+
+});
+
+
+
+
+// Función para toggle del menú hamburguesa
+function toggleMenu() {
+    const navMenu = document.getElementById('navMenu');
+    navMenu.classList.toggle('active');
+}
+
+// Cerrar menú al hacer clic en un enlace
+document.querySelectorAll('.nav-menu a').forEach(link => {
+    link.addEventListener('click', () => {
+        const navMenu = document.getElementById('navMenu');
+        navMenu.classList.remove('active');
+    });
 });
