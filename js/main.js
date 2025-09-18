@@ -66,10 +66,17 @@ function toggleMenu() {
     navMenu.classList.toggle('active');
 }
 
-// Cerrar menú al hacer clic en un enlace
-document.querySelectorAll('.nav-menu a').forEach(link => {
-    link.addEventListener('click', () => {
-        const navMenu = document.getElementById('navMenu');
+function closeMenu() {
+    const navMenu = document.getElementById('navMenu');
+    navMenu.classList.remove('active');
+}
+
+// Cerrar menú al hacer clic fuera
+document.addEventListener('click', function(event) {
+    const navMenu = document.getElementById('navMenu');
+    const hamburger = document.querySelector('.hamburger');
+    
+    if (!navMenu.contains(event.target) && !hamburger.contains(event.target)) {
         navMenu.classList.remove('active');
-    });
+    }
 });
