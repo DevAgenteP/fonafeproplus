@@ -430,19 +430,19 @@
             <img src="images/logo-fonafe.png" alt="Logo FONAFE" class="logo-img">
         </div>
         
-        <!-- Botón hamburguesa -->
         <div class="hamburger" onclick="toggleMenu()">
-            <div class="bar"></div>
-            <div class="bar"></div>
-            <div class="bar"></div>
+            <span></span>
+            <span></span>
+            <span></span>
         </div>
 
         <ul class="nav-menu" id="navMenu">
-            <li><a href="#about">Acerca de</a></li>
-            <li><a href="#location">Ubicación</a></li>
-            <li><a href="#speakers">Expositores</a></li>
-            <li><a href="#agenda">Agenda</a></li>
-            <li><a href="#contact">Contacto</a></li>
+            <li><a href="#about" onclick="closeMenu()">Acerca de</a></li>
+            <li><a href="#location" onclick="closeMenu()">Ubicación</a></li>
+            <li><a href="#speakers" onclick="closeMenu()">Expositores</a></li>
+            <li><a href="#agenda" onclick="closeMenu()">Agenda</a></li>
+            <li><a href="#contact" onclick="closeMenu()">Contacto</a></li>
         </ul>
     </div>
 </header>
+
