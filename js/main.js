@@ -58,25 +58,3 @@ window.addEventListener('click', function(event) {
 });
 
 
-
-
-// Función para toggle del menú hamburguesa
-function toggleMenu() {
-    const navMenu = document.getElementById('navMenu');
-    navMenu.classList.toggle('active');
-}
-
-function closeMenu() {
-    const navMenu = document.getElementById('navMenu');
-    navMenu.classList.remove('active');
-}
-
-// Cerrar menú al hacer clic fuera
-document.addEventListener('click', function(event) {
-    const navMenu = document.getElementById('navMenu');
-    const hamburger = document.querySelector('.hamburger');
-    
-    if (!navMenu.contains(event.target) && !hamburger.contains(event.target)) {
-        navMenu.classList.remove('active');
-    }
-});
