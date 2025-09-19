@@ -999,10 +999,10 @@ footer:before {
     .nav-menu {
         display: none;
         position: absolute;
-        top: 68px;
+        top: 65px;
         left: 0;
         width: 100%;
-        background-color: rgba(255, 255, 255, 0.98);
+        background-color: rgba(255, 255, 255, 0.85);
         backdrop-filter: blur(10px);
         flex-direction: column;
         padding: 20px 0;
@@ -1047,4 +1047,5 @@ footer:before {
         min-height: 70px;
     }
 }
+
 
