@@ -1004,7 +1004,7 @@ footer:before {
         width: 100%;
         background-color: rgba(255, 255, 255, 0.85);
         backdrop-filter: blur(10px);
-        box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         flex-direction: column;
         padding: 20px 0;
         z-index: 1000;
@@ -1047,6 +1047,7 @@ footer:before {
         min-height: 70px;
     }
 }
+
 
 
 
