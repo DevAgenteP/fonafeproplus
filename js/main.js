@@ -1,4 +1,4 @@
-// Countdown Timer - 7 de Noviembre de 2025
+// Countdown Timer
 function updateCountdown() {
     const eventDate = new Date('November 7, 2025 08:00:00').getTime();
     const now = new Date().getTime();
@@ -88,3 +88,4 @@ document.addEventListener('click', function(e) {
         navMenu.classList.remove('active');
     }
 });
+
