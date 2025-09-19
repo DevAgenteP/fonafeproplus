@@ -949,4 +949,101 @@ footer:before {
         margin-bottom: 20px;
         align-self: center;
     }
+
+}
+
+
+
+
+/* ===== HAMBURGUESA (SOLO MÓVIL) ===== */
+.hamburger {
+    display: none; /* Oculta en desktop */
+    flex-direction: column;
+    cursor: pointer;
+    padding: 5px;
+    z-index: 1001;
+    position: absolute;
+    right: 20px;
+    top: 20px;
+}
+
+.hamburger span {
+    width: 25px;
+    height: 3px;
+    background-color: var(--primary-2);
+    margin: 3px 0;
+    transition: 0.3s;
+    display: block;
+}
+
+/* ===== RESPONSIVE: MÓVIL ===== */
+@media (max-width: 768px) {
+    /* Header se mantiene translúcido */
+    header {
+        background-color: rgba(255, 255, 255, 0.85);
+        backdrop-filter: blur(10px);
+    }
+    
+    /* Logo centrado */
+    .logo {
+        margin: 0 auto;
+        text-align: center;
+    }
+    
+    /* Muestra hamburguesa */
+    .hamburger {
+        display: flex;
+    }
+    
+    /* Oculta menú normal */
+    .nav-menu {
+        display: none;
+        position: absolute;
+        top: 70px;
+        left: 0;
+        width: 100%;
+        background-color: rgba(255, 255, 255, 0.98);
+        backdrop-filter: blur(10px);
+        flex-direction: column;
+        padding: 20px 0;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+    }
+    
+    /* Menú activo (se despliega hacia abajo) */
+    .nav-menu.active {
+        display: flex;
+        animation: slideDown 0.3s ease;
+    }
+    
+    /* Items del menú */
+    .nav-menu li {
+        margin: 15px 0;
+        text-align: center;
+    }
+    
+    .nav-menu a {
+        color: var(--primary-2);
+        font-size: 1.1rem;
+        padding: 10px 20px;
+        display: block;
+    }
+    
+    /* Animación de despliegue */
+    @keyframes slideDown {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    /* Asegura que el header mantenga su altura */
+    .header-container {
+        position: relative;
+        min-height: 70px;
+    }
 }
