@@ -99,23 +99,37 @@ document.addEventListener('DOMContentLoaded', function() {
     
     dropdowns.forEach(dropdown => {
         // Solo para desktop - hover
-        dropdown.addEventListener('mouseenter', function() {
-            if (window.innerWidth > 768) {
+        if (window.innerWidth > 768) {
+            dropdown.addEventListener('mouseenter', function() {
                 this.classList.add('active');
-            }
-        });
-        
-        dropdown.addEventListener('mouseleave', function() {
-            if (window.innerWidth > 768) {
+            });
+            
+            dropdown.addEventListener('mouseleave', function() {
                 this.classList.remove('active');
+            });
+        }
+    });
+    
+    // Cerrar menú al hacer clic en cualquier enlace (incluidos los del dropdown)
+    document.querySelectorAll('.nav-menu a').forEach(link => {
+        link.addEventListener('click', (e) => {
+            // Si es un enlace externo (que abre en nueva pestaña), no cerrar el menú
+            if (link.target === '_blank' || link.href.includes('http')) {
+                return;
+            }
+            
+            if (window.innerWidth <= 768) {
+                const navMenu = document.getElementById('navMenu');
+                const hamburger = document.getElementById('hamburger');
+                if (navMenu) navMenu.classList.remove('active');
+                if (hamburger) hamburger.classList.remove('active');
             }
         });
     });
     
-    // En móvil, los enlaces del dropdown funcionan normal
+    // Para los enlaces del dropdown que son externos
     document.querySelectorAll('.dropdown-menu a').forEach(link => {
         link.addEventListener('click', () => {
-            // Cerrar el menú hamburguesa al hacer clic en cualquier enlace
             if (window.innerWidth <= 768) {
                 const navMenu = document.getElementById('navMenu');
                 const hamburger = document.getElementById('hamburger');
