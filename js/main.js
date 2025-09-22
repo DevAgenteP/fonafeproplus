@@ -92,13 +92,13 @@ document.addEventListener('click', function(e) {
 
 
 
-// ===== DROPDOWN FUNCTIONALITY =====
+// ===== DROPDOWN FUNCTIONALITY SIMPLIFICADA =====
 document.addEventListener('DOMContentLoaded', function() {
-    // Dropdown para desktop
+    // Solo funcionalidad hover para desktop
     const dropdowns = document.querySelectorAll('.dropdown');
     
     dropdowns.forEach(dropdown => {
-        // Para desktop - hover
+        // Solo para desktop - hover
         dropdown.addEventListener('mouseenter', function() {
             if (window.innerWidth > 768) {
                 this.classList.add('active');
@@ -110,46 +110,18 @@ document.addEventListener('DOMContentLoaded', function() {
                 this.classList.remove('active');
             }
         });
-        
-        // Para móvil - click
-        const dropdownToggle = dropdown.querySelector('.dropdown-toggle');
-        if (dropdownToggle) {
-            dropdownToggle.addEventListener('click', function(e) {
-                if (window.innerWidth <= 768) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    
-                    // Cerrar otros dropdowns abiertos
-                    document.querySelectorAll('.dropdown').forEach(otherDropdown => {
-                        if (otherDropdown !== dropdown) {
-                            otherDropdown.classList.remove('active');
-                        }
-                    });
-                    
-                    // Toggle este dropdown
-                    dropdown.classList.toggle('active');
-                }
-            });
-        }
     });
     
-    // Cerrar dropdowns al hacer click fuera
-    document.addEventListener('click', function(e) {
-        if (window.innerWidth <= 768) {
-            if (!e.target.closest('.dropdown')) {
-                document.querySelectorAll('.dropdown').forEach(dropdown => {
-                    dropdown.classList.remove('active');
-                });
+    // En móvil, los enlaces del dropdown funcionan normal
+    document.querySelectorAll('.dropdown-menu a').forEach(link => {
+        link.addEventListener('click', () => {
+            // Cerrar el menú hamburguesa al hacer clic en cualquier enlace
+            if (window.innerWidth <= 768) {
+                const navMenu = document.getElementById('navMenu');
+                const hamburger = document.getElementById('hamburger');
+                if (navMenu) navMenu.classList.remove('active');
+                if (hamburger) hamburger.classList.remove('active');
             }
-        }
-    });
-    
-    // Cerrar dropdowns al cambiar tamaño de ventana
-    window.addEventListener('resize', function() {
-        if (window.innerWidth > 768) {
-            document.querySelectorAll('.dropdown').forEach(dropdown => {
-                dropdown.classList.remove('active');
-            });
-        }
+        });
     });
 });
