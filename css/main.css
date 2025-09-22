@@ -1117,6 +1117,7 @@ footer:before {
 }
 
 
+
 /* ===== DROPDOWN MENU ===== */
 .dropdown {
     position: relative;
@@ -1126,6 +1127,7 @@ footer:before {
     display: flex;
     align-items: center;
     gap: 5px;
+    cursor: pointer;
 }
 
 .dropdown-toggle .fa-chevron-down {
@@ -1179,7 +1181,7 @@ footer:before {
     border-left-color: var(--primary-1);
 }
 
-/* ===== DROPDOWN EN MÓVIL - SIEMPRE DESPLEGADO ===== */
+/* ===== DROPDOWN EN MÓVIL - SIEMPRE DESPLEGADO CUANDO EL MENÚ ESTÁ ABIERTO ===== */
 @media (max-width: 768px) {
     .dropdown {
         position: static;
@@ -1189,6 +1191,7 @@ footer:before {
         pointer-events: none; /* Desactiva el clic en móvil */
         font-weight: 600;
         color: var(--primary-1);
+        padding: 10px 20px;
     }
     
     .dropdown-toggle .fa-chevron-down {
@@ -1202,19 +1205,40 @@ footer:before {
         opacity: 1;
         visibility: visible;
         transform: none;
-        display: block !important; /* Siempre visible */
-        padding: 5px 0 5px 20px;
-        margin-top: 5px;
+        display: block !important; /* Siempre visible cuando el menú está abierto */
+        padding: 0;
+        margin: 0;
+        width: 100%;
+    }
+    
+    .dropdown-menu li {
+        margin: 0;
     }
     
     .dropdown-menu a {
-        padding: 8px 15px;
-        border-left: 2px solid var(--translucent-gray);
+        padding: 10px 20px 10px 40px; /* Mayor indentación para subitems */
+        border-left: none;
+        border-bottom: 1px solid rgba(0,0,0,0.1);
         font-size: 0.95rem;
+        color: var(--primary-2);
+        transition: all 0.3s;
     }
     
     .dropdown-menu a:hover {
-        background-color: transparent;
+        background-color: rgba(205, 32, 44, 0.1);
         color: var(--primary-1);
+        padding-left: 45px;
+    }
+    
+    /* Asegurar que se muestre cuando el menú hamburguesa está activo */
+    .nav-menu.active .dropdown-menu {
+        display: block !important;
+        opacity: 1;
+        visibility: visible;
+    }
+    
+    /* Estilo para el último item del dropdown */
+    .dropdown-menu li:last-child a {
+        border-bottom: none;
     }
 }
