@@ -1006,7 +1006,7 @@ footer:before {
         top: 65px;
         left: 0;
         width: 100%;
-        background-color: rgba(255, 255, 255, 0.95);
+        background-color: rgba(255, 255, 255, 0.98);
         backdrop-filter: blur(10px);
         box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
         flex-direction: column;
@@ -1022,7 +1022,7 @@ footer:before {
     
     /* Items del menú */
     .nav-menu li {
-        margin: 8px 0;
+        margin: 3px 0;
         text-align: center;
     }
     
@@ -1144,3 +1144,4 @@ footer:before {
         display: block;
     }
 }
+
