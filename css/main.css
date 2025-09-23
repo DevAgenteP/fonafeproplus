@@ -1022,7 +1022,7 @@ footer:before {
     
     /* Items del menú */
     .nav-menu li {
-        margin: 3px 0;
+        margin: 1.5px 0;
         text-align: center;
     }
     
@@ -1144,4 +1144,5 @@ footer:before {
         display: block;
     }
 }
+
 
