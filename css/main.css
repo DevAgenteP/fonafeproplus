@@ -113,7 +113,7 @@ header {
 /* Hero Section */
 .hero {
     background: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.65)), 
-    url('https://images.unsplash.com/photo-1574169208507-84376144848b');
+    url('https://images.unsplash.com/photo-1574169208507-84376144848b?w=1000&q=70&fit=crop');
     filter: saturate(1.3) contrast(1.1);
     background-size: cover;
     background-position: center;
@@ -366,7 +366,7 @@ header {
 /* Location Section */
 .location {
     background: linear-gradient(to right, var(--translucent-dark), var(--primary-2)), 
-    url('https://images.unsplash.com/photo-1482029255085-35a4a48b7084');
+    url('https://images.unsplash.com/photo-1482029255085-35a4a48b7084?w=800&q=70&fit=crop');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
@@ -1144,6 +1144,7 @@ footer:before {
         display: block;
     }
 }
+
 
 
 
