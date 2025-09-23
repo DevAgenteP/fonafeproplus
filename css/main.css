@@ -1133,3 +1133,14 @@ footer:before {
         display: block;
     }
 }
+
+/* En desktop: ocultar los items móviles */
+@media (min-width: 769px) {
+    .mobile-only {
+        display: none !important;
+    }
+    
+    .desktop-only {
+        display: block;
+    }
+}
