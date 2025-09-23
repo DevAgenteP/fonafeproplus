@@ -982,6 +982,9 @@ footer:before {
 
 /* ===== RESPONSIVE: MÓVIL ===== */
 @media (max-width: 768px) {
+    .hero, .location {
+    background-attachment: scroll;
+    }
     /* Header se mantiene translúcido */
     header {
         background-color: rgba(255, 255, 255, 0.85);
@@ -1144,6 +1147,7 @@ footer:before {
         display: block;
     }
 }
+
 
 
 
