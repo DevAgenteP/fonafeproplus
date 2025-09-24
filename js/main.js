@@ -88,3 +88,62 @@ document.addEventListener('click', function(e) {
         navMenu.classList.remove('active');
     }
 });
+
+
+
+
+
+// ===== CAROUSEL FUNCTIONALITY =====
+document.addEventListener('DOMContentLoaded', function() {
+    const carouselSlides = document.querySelectorAll('.carousel-slide');
+    const dots = document.querySelectorAll('.dot');
+    let currentSlide = 0;
+    let autoSlideInterval;
+
+    function showSlide(n) {
+        carouselSlides.forEach(slide => slide.classList.remove('active'));
+        dots.forEach(dot => dot.classList.remove('active'));
+        
+        currentSlide = (n + carouselSlides.length) % carouselSlides.length;
+        carouselSlides[currentSlide].classList.add('active');
+        dots[currentSlide].classList.add('active');
+    }
+
+    function nextSlide() {
+        showSlide(currentSlide + 1);
+    }
+
+    // Auto slide cada 3 segundos
+    function startAutoSlide() {
+        stopAutoSlide();
+        autoSlideInterval = setInterval(nextSlide, 3000);
+    }
+
+    function stopAutoSlide() {
+        if (autoSlideInterval) {
+            clearInterval(autoSlideInterval);
+        }
+    }
+
+    // Event listeners para los dots
+    dots.forEach((dot, index) => {
+        dot.addEventListener('click', () => {
+            stopAutoSlide();
+            showSlide(index);
+            startAutoSlide();
+        });
+    });
+
+    // Pausar auto slide cuando el mouse está sobre el carousel
+    const carouselContainer = document.querySelector('.carousel-container');
+    if (carouselContainer) {
+        carouselContainer.addEventListener('mouseenter', stopAutoSlide);
+        carouselContainer.addEventListener('mouseleave', startAutoSlide);
+        
+        carouselContainer.addEventListener('touchstart', stopAutoSlide);
+        carouselContainer.addEventListener('touchend', startAutoSlide);
+    }
+
+    // Iniciar carousel
+    startAutoSlide();
+});
