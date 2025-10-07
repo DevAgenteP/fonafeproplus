@@ -1322,7 +1322,7 @@ footer:before {
 
 .archivo-item {
     background: white;
-    border: 1px solid #e9ecef;
+    border: 1.5px solid var(--translucent-gray);
     border-radius: 8px;
     padding: 20px;
     display: flex;
@@ -1481,4 +1481,5 @@ footer:before {
         width: 100%;
         justify-content: center;
     }
+
 }
