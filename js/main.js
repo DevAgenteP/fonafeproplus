@@ -66,15 +66,31 @@ document.addEventListener('click', function(e) {
 
 // Countdown Timer
 function updateCountdown() {
-    const eventDate = new Date('November 7, 2025 08:00:00').getTime();
-    const now = new Date().getTime();
-    const distance = eventDate - now;
+    const eventDate = new Date('November 7, 2025 08:00:00');
+    const now = new Date();
     
-    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    // Cálculo PRECISO de meses y días
+    let months = (eventDate.getFullYear() - now.getFullYear()) * 12;
+    months += eventDate.getMonth() - now.getMonth();
+    
+    // Ajustar si el día del evento aún no llega este mes
+    if (eventDate.getDate() < now.getDate()) {
+        months--;
+    }
+    
+    // Calcular días restantes del mes actual
+    const tempDate = new Date(now);
+    tempDate.setMonth(tempDate.getMonth() + months);
+    const days = Math.floor((eventDate - tempDate) / (1000 * 60 * 60 * 24));
+    
+    // Horas, minutos, segundos (igual que antes)
+    const distance = eventDate - now;
     const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
     const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
     const seconds = Math.floor((distance % (1000 * 60)) / 1000);
     
+    // Actualizar TODOS los elementos
+    document.getElementById("months").innerHTML = months.toString().padStart(2, '0');
     document.getElementById("days").innerHTML = days.toString().padStart(2, '0');
     document.getElementById("hours").innerHTML = hours.toString().padStart(2, '0');
     document.getElementById("minutes").innerHTML = minutes.toString().padStart(2, '0');
@@ -152,6 +168,57 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Iniciar carousel
     startAutoSlide();
+});
+
+
+
+
+
+
+
+
+// ===== SWIPE TÁCTIL PARA CAROUSEL MÓVIL =====
+document.addEventListener('DOMContentLoaded', function() {
+    const carouselContainer = document.querySelector('.carousel-container');
+    let startX = 0;
+    let currentX = 0;
+    let isSwiping = false;
+
+    if (carouselContainer) {
+        // Touch events para móvil
+        carouselContainer.addEventListener('touchstart', handleTouchStart);
+        carouselContainer.addEventListener('touchmove', handleTouchMove);
+        carouselContainer.addEventListener('touchend', handleTouchEnd);
+    }
+
+    function handleTouchStart(e) {
+        startX = e.touches[0].clientX;
+        isSwiping = true;
+        stopAutoSlide(); // Pausar auto slide durante el swipe
+    }
+
+    function handleTouchMove(e) {
+        if (!isSwiping) return;
+        currentX = e.touches[0].clientX;
+    }
+
+    function handleTouchEnd() {
+        if (!isSwiping) return;
+        
+        const diff = startX - currentX;
+        const swipeThreshold = 50; // Mínimo de pixels para considerar swipe
+        
+        if (Math.abs(diff) > swipeThreshold) {
+            if (diff > 0) {
+                nextSlide(); // Swipe izquierda -> siguiente
+            } else {
+                showSlide(currentSlide - 1); // Swipe derecha -> anterior
+            }
+        }
+        
+        isSwiping = false;
+        startAutoSlide(); // Reanudar auto slide
+    }
 });
 
 
@@ -252,3 +319,28 @@ style.textContent = `
     }
 `;
 document.head.appendChild(style);
+
+
+
+
+
+
+
+// Funciones para el modal de actualizaciones
+function openUpdatesModal() {
+    document.getElementById('modalActualizaciones').classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeUpdatesModal() {
+    document.getElementById('modalActualizaciones').classList.remove('active');
+    document.body.style.overflow = 'auto';
+}
+
+// Cerrar modal al hacer clic fuera
+window.addEventListener('click', function(event) {
+    const modal = document.getElementById('modalActualizaciones');
+    if (event.target === modal) {
+        closeUpdatesModal();
+    }
+});
