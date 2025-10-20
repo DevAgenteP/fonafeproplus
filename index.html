@@ -16,9 +16,9 @@
     <!-- Header -->
     <header>
         <div class="container header-container">
-            <div class="logo">
-                <img src="images/logo-fonafe.png" alt="Logo FONAFE" class="logo-img">
-            </div>
+            <a href="#inicio" class="logo">
+                <img src="images/logo-fonafeproplusRG.png" alt="Logo FONAFE" class="logo-img">
+            </a>
 
 
             
@@ -63,13 +63,27 @@
 
 
 
+    <!-- White Section -->
+    <section class="top-spacer"></section>
+
+    <!-- Color Gradient Bar -->
+    <section class="color-gradient-bar"></section>
+
+
+
+
+
+
+
+
     <!-- Hero Section -->
-    <section class="hero">
+    <section id="inicio" class="hero">
+    <img src="images/hero-bg.png" alt="" class="hero-bg">
         <div class="container hero-content">
-            <h1>FONAFE PRO<span class="superplus">+</span> 2025</h1>
-            <p>Evento de Gestión por Procesos, Sistema Integrado de Gestión (SIG) e Innovación</p>
+             <img src="images/logo-fonafeproplus2025.png" alt="FONAFE PRO+" class="hero-logo">
+             <p>Gestión que evoluciona, innovación que inspira</p>
         </div>
-    </section>
+</section>
 
 
 
@@ -86,6 +100,10 @@
                 <span class="event-countdown-text">El evento comienza en:</span>
             </h2>
             <div class="countdown-container">
+                <div class="countdown-item">
+                    <div class="countdown-number" id="months">00</div>
+                    <div class="countdown-label">Meses</div>
+                </div>
                 <div class="countdown-item">
                     <div class="countdown-number" id="days">00</div>
                     <div class="countdown-label">Días</div>
@@ -212,54 +230,66 @@
 
 
 
-                <div class="speaker-card">
-                    <div class="speaker-image" onclick="openModal('modal1')">
+                <div class="speaker-card" onclick="openModal('modal1')">
+                    <div class="speaker-image">
                         <img src="images/speaker1.jpg" alt="Augusto Miyagi">
                     </div>
                     <div class="speaker-info">
                         <h3 class="speaker-name">Augusto Miyagi</h3>
                         <p class="speaker-role">Past Presidente del Capítulo Perú de ABPMP</p>
+                        <div class="speaker-cta">
+                            <span>Ver trayectoria</span>
+                        </div>
                     </div>
                 </div>
 
 
 
 
-                <div class="speaker-card">
-                    <div class="speaker-image" onclick="openModal('modal2')">
+                <div class="speaker-card" onclick="openModal('modal2')">
+                    <div class="speaker-image">
                         <img src="images/speaker2.jpg" alt="Luz Felix">
                     </div>
                     <div class="speaker-info">
                         <h3 class="speaker-name">Luz Felix</h3>
                         <p class="speaker-role">Directora de Transformación Digital de SISALRIL 
                             República Dominicana</p>
+                        <div class="speaker-cta">
+                            <span>Ver trayectoria</span>
+                        </div>
                     </div>
                 </div>
 
 
 
 
-                <div class="speaker-card">
-                    <div class="speaker-image" onclick="openModal('modal3')">
+                <div class="speaker-card" onclick="openModal('modal3')">
+                    <div class="speaker-image">
                         <img src="images/speaker3.jpg" alt="Freddy Alvarado">
                     </div>
                     <div class="speaker-info">
                         <h3 class="speaker-name">Freddy Alvarado</h3>
                         <p class="speaker-role">Director de la Maestría en Gestión de la Ciberseguridad y 
                             Privacidad de ESAN</p>
+                        <div class="speaker-cta">
+                            <span>Ver trayectoria</span>
+                        </div>
                     </div>
                 </div>
 
 
 
 
-                <div class="speaker-card">
-                    <div class="speaker-image" onclick="openModal('modal4')">
+                <div class="speaker-card" onclick="openModal('modal4')">
+                    <div class="speaker-image">
                         <img src="images/speaker4.jpg" alt="Omar Crespo">
                     </div>
                     <div class="speaker-info">
                         <h3 class="speaker-name">Omar Crespo</h3>
                         <p class="speaker-role">Experto en Inteligencia Artificial, Innovacion y Nuevas Tecnologias</p>
+                        <div class="speaker-cta">
+                            <span>Ver trayectoria</span>
+                        </div>
                     </div>
                 </div>
 
@@ -421,7 +451,7 @@
 
 
                 <div class="schedule-item">
-                    <div class="schedule-time">8:00 AM</div>
+                    <div class="schedule-time">8:00 a.m.</div>
                     <div class="schedule-info">
                         <h3 class="schedule-title">Recepción y Welcome Coffee + Catering</h3>
                     </div>
@@ -431,13 +461,11 @@
 
 
                 <div class="schedule-item">
-                    <div class="schedule-time">8:30 - 8:45 AM</div>
+                    <div class="schedule-time">8:30 - 8:45 a.m.</div>
                     <div class="schedule-info">
                         <h3 class="schedule-title">Bienvenida</h3>
-                        <p class="schedule-speaker">Héctor Buzaglo de Bracamonte | Gerente Corporativo de 
+                        <p class="schedule-speaker">Héctor Buzaglo de Bracamonte<br>Gerente Corporativo de 
                             Planeamiento y Control de Gestión</p>
-                        <p class="schedule-speaker">Melisa Torres Delgado | Ejecutiva Corporativa de Procesos 
-                            y Mejora Continua</p>
                     </div>
                 </div>
 
@@ -445,7 +473,7 @@
 
 
                 <div class="schedule-item">
-                    <div class="schedule-time">8:45 - 9:30 AM</div>
+                    <div class="schedule-time">8:45 - 9:30 a.m.</div>
                     <div class="schedule-info">
                         <h3 class="schedule-title">Inteligencia Artificial aplicada a la gestión por procesos</h3>
                         <p class="schedule-speaker">Augusto Miyagi</p>
@@ -456,7 +484,7 @@
 
 
                 <div class="schedule-item">
-                    <div class="schedule-time">9:30 - 10:15 AM</div>
+                    <div class="schedule-time">9:30 - 10:15 a.m.</div>
                     <div class="schedule-info">
                         <h3 class="schedule-title">BPMS y metodologías ágiles: acelerando la innovación en los 
                             servicios públicos</h3>
@@ -468,7 +496,7 @@
 
 
                 <div class="schedule-item">
-                    <div class="schedule-time">10:15 - 11:00 AM</div>
+                    <div class="schedule-time">10:15 - 11:00 a.m.</div>
                     <div class="schedule-info">
                         <h3 class="schedule-title">Casos de éxito en Inteligencia Artificial: lecciones para transformar la empresa</h3>
                         <p class="schedule-speaker">Freddy Alvarado</p>
@@ -479,7 +507,7 @@
 
 
                 <div class="schedule-item">
-                    <div class="schedule-time">11:00 - 11:30 AM</div>
+                    <div class="schedule-time">11:00 - 11:30 a.m.</div>
                     <div class="schedule-info">
                         <h3 class="schedule-title">Break - Catering - Networking</h3>
                     </div>
@@ -489,7 +517,7 @@
 
 
                 <div class="schedule-item">
-                    <div class="schedule-time">11:30 - 12:15 PM</div>
+                    <div class="schedule-time">11:30 - 12:15 p.m.</div>
                     <div class="schedule-info">
                         <h3 class="schedule-title">Tipos de Inteligencia Artificial y tendencias que impulsan la gestión empresarial</h3>
                         <p class="schedule-speaker">Omar Crespo</p>
@@ -500,7 +528,7 @@
 
 
                 <div class="schedule-item">
-                    <div class="schedule-time">12:15 - 12:30 PM</div>
+                    <div class="schedule-time">12:15 - 12:30 p.m.</div>
                     <div class="schedule-info">
                         <h3 class="schedule-title">Dinámica</h3>
                     </div>
@@ -510,27 +538,17 @@
 
 
                 <div class="schedule-item">
-                    <div class="schedule-time">12:30 - 1:00 PM</div>
+                    <div class="schedule-time">12:30 - 1:15 p.m.</div>
                     <div class="schedule-info">
-                        <h3 class="schedule-title">Casos de éxito innovadores de las Empresas I</h3>
+                        <h3 class="schedule-title">Casos de éxito innovadores de las Empresas</h3>
                     </div>
                 </div>
 
-
-
-
-                <div class="schedule-item">
-                    <div class="schedule-time">1:00 - 1:30 PM</div>
-                    <div class="schedule-info">
-                        <h3 class="schedule-title">Casos de éxito innovadores de las Empresas II</h3>
-                    </div>
-                </div>
                 
 
 
-
                 <div class="schedule-item">
-                    <div class="schedule-time">1:30 - 1:45 PM</div>
+                    <div class="schedule-time">1:15 - 1:45 p.m.</div>
                     <div class="schedule-info">
                         <h3 class="schedule-title">Premiación</h3>
                     </div>
@@ -540,10 +558,10 @@
 
 
                 <div class="schedule-item">
-                    <div class="schedule-time">1:45 - 2:00 PM</div>
+                    <div class="schedule-time">1:45 - 2:00 p.m.</div>
                     <div class="schedule-info">
                         <h3 class="schedule-title">Clausura</h3>
-                        <p class="schedule-speaker">Melisa Torres Delgado | Ejecutiva Corporativo de Procesos 
+                        <p class="schedule-speaker">Melisa Torres Delgado<br>Ejecutiva Corporativa de Procesos 
                             y Mejora Continua</p>
                     </div>
                 </div>
@@ -780,6 +798,7 @@
         <li><a href="https://fonafegob-my.sharepoint.com/:f:/g/personal/ahugo_fonafe_gob_pe/EhZqv81GtPJPmWxNqCuDvlQBvtyxpKEf43ZW_wjs9KfyuA?e=f1cakx" target="_blank" rel="noopener noreferrer">Galería</a></li>
         <li><a href="#files">Archivos</a></li>
         <li><a href="https://www.fonafe.gob.pe/" target="_blank" rel="noopener noreferrer">FONAFE</a></li>
+	<li><a href="#" onclick="openUpdatesModal()">Actualizaciones</a></li>
     </ul>
 </div>
 
@@ -819,12 +838,62 @@
     </footer>
 
 
+
+
+
+
+
+
+<!-- Modal Actualizaciones -->
+<div id="modalActualizaciones" class="modal-updates">
+    <div class="modal-updates-content">
+        <span class="close-updates-modal" onclick="closeModal('modalActualizaciones')">&times;</span>
+        <div class="modal-updates-header">
+            <div class="modal-updates-title">
+                <h2 class="modal-updates-name">FONAFE PRO<span class="superplus">+</span></h2>
+                <p class="modal-updates-role">Plataforma actualizada<br>Versión 2.0 - Octubre 2025</p>
+            </div>
+        </div>
+        <div class="modal-updates-body">
+            <p class="version-history-title">Historial de versiones:</p>
+            
+            <div class="version-item">
+                <p class="version-number">v2.0 - Octubre 2025 | XX/10/2025</p>
+                <ul class="version-changes">
+                    <li>Rediseño visual general (nueva paleta de colores y logo).</li>
+                    <li>Actualización del fondo principal y mejoras en animaciones 
+			para una navegación más fluida.</li>
+                    <li>Se añadió el conteo de meses en el contador principal.</li>
+                    <li>Las tarjetas de expositores ahora son completamente seleccionables 
+			y cuentan con el botón “Ver trayectoria”.</li>
+                    <li>Nuevos apartados: Archivos y Actualizaciones.</li>
+                    <li>Optimización del diseño y la interacción en dispositivos móviles.</li>
+                    <li>Mejoras generales de usabilidad e interfaz.</li>
+                    <li>Se limpió y optimizó el código para mayor rapidez y estabilidad.</li>
+                    <li>Se añadió una explicación al código CSS para facilitar su mantenimiento.</li>
+                </ul>
+            </div>
+            
+            <div class="version-item">
+                <p class="version-number">v1.0 - Octubre 2025 | 03/10/2025</p>
+                <ul class="version-changes">
+                    <li>Lanzamiento inicial de la plataforma.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
     <script src="js/main.js"></script>
 
 
 </body>
 
 </html>
-
-
-
