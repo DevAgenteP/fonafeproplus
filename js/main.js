@@ -85,6 +85,13 @@ function updateCountdown() {
     
     // Horas, minutos, segundos (igual que antes)
     const distance = eventDate - now;
+    
+    // Detener countdown si ya pasó la fecha
+    if (distance < 0) {
+        clearInterval(countdownInterval);
+        return;
+    }
+    
     const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
     const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
     const seconds = Math.floor((distance % (1000 * 60)) / 1000);
@@ -97,7 +104,7 @@ function updateCountdown() {
     document.getElementById("seconds").innerHTML = seconds.toString().padStart(2, '0');
 }
 
-setInterval(updateCountdown, 1000);
+const countdownInterval = setInterval(updateCountdown, 1000);
 updateCountdown();
 
 
@@ -183,6 +190,37 @@ document.addEventListener('DOMContentLoaded', function() {
     let startX = 0;
     let currentX = 0;
     let isSwiping = false;
+
+    // Obtener referencias a las funciones del carousel principal
+    const carouselSlides = document.querySelectorAll('.carousel-slide');
+    const dots = document.querySelectorAll('.dot');
+    let currentSlide = 0;
+
+    function showSlide(n) {
+        carouselSlides.forEach(slide => slide.classList.remove('active'));
+        dots.forEach(dot => dot.classList.remove('active'));
+        
+        currentSlide = (n + carouselSlides.length) % carouselSlides.length;
+        carouselSlides[currentSlide].classList.add('active');
+        dots[currentSlide].classList.add('active');
+    }
+
+    function nextSlide() {
+        showSlide(currentSlide + 1);
+    }
+
+    function stopAutoSlide() {
+        // Esta función debe coincidir con la del carousel principal
+        if (window.autoSlideInterval) {
+            clearInterval(window.autoSlideInterval);
+        }
+    }
+
+    function startAutoSlide() {
+        // Esta función debe coincidir con la del carousel principal
+        stopAutoSlide();
+        window.autoSlideInterval = setInterval(nextSlide, 3000);
+    }
 
     if (carouselContainer) {
         // Touch events para móvil
