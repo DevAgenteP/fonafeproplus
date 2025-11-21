@@ -384,5 +384,6 @@ footer:before {
     .nav-btn { display: none !important; }
     
     /* Reducción de altura del reel */
-    .thumbnail-reel { height: 50px; }
+    .thumbnail-reel { height: 110px; }
+
 }
