@@ -20,13 +20,13 @@
 
 body {
     color: var(--dark-color); /* Color base de texto */
-    /* Fondo calculado: Mezcla de blanco y azul corporativo */
-    background-color: color-mix(in srgb, white 95%, var(--color-2) 5%);
-    /* Patrón de puntos decorativo idéntico al sitio principal */
-    background-image: radial-gradient(var(--translucent-gray) 1px, transparent 1px);
+    background-color: color-mix(in srgb, white 95%, var(--color-2) 5%); /* Fondo calculado: Mezcla de blanco y azul corporativo */
+    background-image: radial-gradient(var(--translucent-gray) 1px, transparent 1px); /* Patrón de puntos decorativo idéntico al sitio principal */
     background-size: 20px 20px; /* Espaciado del patrón */
     background-position: 0 0;   /* Alineación del patrón */
     min-height: 100vh;          /* Asegura que el fondo cubra toda la pantalla */
+    display: flex;          	/* Activa Flexbox */
+    flex-direction: column; 	/* Organizamos todo en columna vertical */
 }
 
 /* Contenedor maestro: Centra el contenido y limita el ancho máximo */
@@ -271,7 +271,7 @@ header {
 
 /* Tira de miniaturas inferior (Reel) */
 .thumbnail-reel {
-    width: 95%; height: 70px;
+    width: 95%; height: 105px;
     display: flex; gap: 8px;
     overflow-x: auto; overflow-y: hidden; /* Solo scroll horizontal */
     padding: 10px 0; margin-bottom: 10px;
