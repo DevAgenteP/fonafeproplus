@@ -358,7 +358,12 @@ footer:before {
         align-items: center;
         padding: 10px 15px;
     }
-    
+
+    /* Corrección óptica para centrar el logo visualmente en móvil */  
+    .logo {
+        padding-left: 8px; 
+    }
+
     /* Ajuste de altura del espaciador (Header más alto en móvil) */
     .top-spacer { height: 110px; }
 
@@ -396,5 +401,6 @@ footer:before {
     .copyright {
         font-size: 0.75rem;
     }
+
 
 }
