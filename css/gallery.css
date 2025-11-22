@@ -361,7 +361,7 @@ footer:before {
 
     /* Corrección óptica para centrar el logo visualmente en móvil */  
     .logo {
-        padding-left: 10px; 
+        padding-left: 8px; 
     }
 
     /* Ajuste de altura del espaciador (Header más alto en móvil) */
@@ -404,4 +404,5 @@ footer:before {
 
 
 }
+
 
