@@ -1322,7 +1322,7 @@ header {
 footer {
     background-color: var(--dark-color);        /* Fondo */
     color: white;                               /* Color de texto */
-    padding: 80px 0 30px;                       /* Espaciado vertical */
+    padding: 80px 0 10px;                       /* Espaciado vertical */
     position: relative;                         /* Contexto para elementos posicionados */
 }
 
@@ -1425,7 +1425,7 @@ footer:before {
 
 .copyright {
     text-align: center;                        /* Centrado horizontal */
-    padding-top: 30px;                         /* Espaciado superior */
+    padding-top: 10px;                         /* Espaciado superior */
     border-top: 1px solid rgba(255, 255, 255, 0.1); /* Línea divisoria sutil */
     color: rgba(255, 255, 255, 0.7);           /* Color atenuado */
     font-size: 0.9rem;                         /* Tamaño menor */
@@ -1493,14 +1493,14 @@ footer:before {
 }
 
 .modal-updates-name {
-    font-size: 1.5rem;                        /* Tamaño del título principal FONAFE PRO+ */
+    font-size: 1.2rem;                        /* Tamaño del título principal FONAFE PRO+ */
     color: var(--dark-color);                 /* Color del texto principal */
-    margin-bottom: 5px;                       /* Espacio bajo el nombre */
+    margin-bottom: 1px;                       /* Espacio bajo el nombre */
     font-weight: 700;                         /* Negrita para FONAFE PRO+ */
 }
 
 .modal-updates-role {
-    font-size: 1.1rem;                        /* Tamaño del subtítulo */
+    font-size: 0.9rem;                        /* Tamaño del subtítulo */
     color: var(--dark-color);                 /* Color para descripción */
     margin-bottom: 10px;                      /* Espacio bajo la descripción */
 }
@@ -1511,7 +1511,7 @@ footer:before {
 }
 
 .version-history-title {
-    font-size: 1.1rem;                        /* Tamaño de título de historial de veriones" */
+    font-size: 0.9rem;                        /* Tamaño de título de historial de veriones" */
     font-weight: 600;                         /* Peso semibold para título */
     color: var(--dark-color);                 /* Color oscuro para texto */
     margin-bottom: 20px;                      /* Espacio antes de las versiones */
@@ -1522,7 +1522,7 @@ footer:before {
 }
 
 .version-number {
-    font-size: 1rem;                          /* Tamaño del título de cada versión */
+    font-size: 0.8rem;                        /* Tamaño del título de cada versión */
     font-weight: 600;                         /* Peso semibold para versión */
     color: var(--dark-color);                 /* Color oscuro para versión */
     margin-bottom: 6px;                       /* Espacio mínimo antes de lista */
@@ -1535,7 +1535,7 @@ footer:before {
 }
 
 .version-changes li {
-    font-size: 0.95rem;                        /* Tamaño de los bullets de la lista */
+    font-size: 0.8rem;                        /* Tamaño de los bullets de la lista */
     margin-bottom: 2px;                       /* Espaciado mínimo entre items */
     line-height: 1.3;                         /* Altura de línea compacta */
     color: var(--color-5);                    /* Color del texto de items */

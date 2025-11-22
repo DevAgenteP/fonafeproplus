@@ -3,16 +3,22 @@
    ========================================= */
 :root {
     /* Paleta de colores corporativa (Identidad FONAFE) */
-    --color-2: #0d4882;        /* Azul Principal */
-    --color-3: #9ac233;        /* Verde Secundario/Acción */
-    --color-4: #cf202c;        /* Rojo para Alertas/Cierre */
-    --color-5: #282829;        /* Gris Oscuro para Textos */
+    --color-1: #0e225a;        /* AZUL OSCURO */
+    --color-2: #0d4882;        /* AZUL */
+    --color-3: #9ac233;        /* VERDE */
+    --color-4: #cf202c;        /* ROJO */
+    --color-5: #282829;        /* GRIS OSCURO */
+    --color-6: #efedee;        /* GRIS */
     
-    /* Variables de transparencia para efectos visuales (Glassmorphism) */
-    --translucent-white: rgba(255, 255, 255, 0.85);
-    --translucent-dark: rgba(30, 30, 30, 0.95);
-    --translucent-gray: rgba(86, 90, 92, 0.2); 
-    --dark-color: #1a1a1a;
+    /* === COLORES FUNCIONALES === */
+    --light-color: #f8f9fa;      /* FONDO CLARO - Para secciones con fondo blanco/light */
+    --dark-color: #1a1a1a;       /* TEXTO OSCURO - Para texto principal legible */
+    
+    /* === EFECTOS TRANSLÚCIDOS === */
+    --translucent-dark: rgba(30, 30, 30, 0.85);   /* OSCURO TRANSLÚCIDO */
+    --translucent-light: rgba(255, 255, 255, 0.15); /* CLARO TRANSLÚCIDO */
+    --translucent-white: rgba(255, 255, 255, 0.85); /* BLANCO TRANSLÚCIDO */
+    --translucent-gray: rgba(86, 90, 92, 0.2);    /* GRIS TRANSLÚCIDO */
 }
 
 /* Reinicio de márgenes y padding para consistencia entre navegadores */
@@ -110,14 +116,14 @@ header {
 
 /* Estilo base del botón de año */
 .filter-btn {
-    padding: 8px 25px;               /* Área de clic cómoda */
-    border: 2px solid var(--color-2);/* Borde azul corporativo */
-    border-radius: 50px;             /* Bordes totalmente redondeados (Píldora) */
-    background: transparent;         /* Fondo transparente por defecto */
-    color: var(--color-2);           /* Texto azul */
-    cursor: pointer;                 /* Icono de mano al pasar mouse */
-    font-weight: 600;                /* Texto seminegrita */
-    transition: all 0.3s ease;       /* Suavizado de animaciones */
+    padding: 8px 25px;               	/* Área de clic cómoda */
+    border: 2px solid var(--color-2);	/* Color de borde */
+    border-radius: 50px;             	/* Bordes totalmente redondeados (Píldora) */
+    background: transparent;         	/* Fondo transparente por defecto */
+    color: var(--color-2);        	/* Color de texto */
+    cursor: pointer;                 	/* Icono de mano al pasar mouse */
+    font-weight: 600;                	/* Texto seminegrita */
+    transition: all 0.3s ease;       	/* Suavizado de animaciones */
     font-family: 'Open Sans', sans-serif;
 }
 
@@ -126,7 +132,7 @@ header {
 
 /* Estado activo (Año seleccionado) */
 .filter-btn.active { 
-    background-color: var(--color-2); /* Relleno azul sólido */
+    background-color: var(--color-2); /* Color de relleno */
     color: white;                     /* Texto blanco */
     box-shadow: 0 4px 10px rgba(13, 72, 130, 0.3); /* Sombra de resplandor */
     border-color: var(--color-2);
@@ -307,7 +313,7 @@ header {
 footer {
     background-color: var(--dark-color);
     color: white;
-    padding: 8px 0; /* Altura reducida compacta */
+    padding: 10px 0; /* Altura reducida compacta */
     margin-top: auto; /* Se empuja al final de la página */
     border-top: 1px solid rgba(255, 255, 255, 0.1);
     position: relative; /* Necesario para capas absolutas internas */
@@ -385,6 +391,4 @@ footer:before {
     
     /* Reducción de altura del reel */
     .thumbnail-reel { height: 85px; }
-
 }
-
