@@ -1601,7 +1601,7 @@ footer:before {
     .logo {
         margin: 0 auto;                        /* Centrado horizontal */
         text-align: center;                    /* Contenido centrado */
-        padding-left: 18px;		       /* CORRECCIÓN ÓPTICA: Empujamos px a la derecha para compensar el "+" */
+        padding-left: 22px;		       /* CORRECCIÓN ÓPTICA: Empujamos px a la derecha para compensar el "+" */
     }
     
     .hamburger {
@@ -1867,3 +1867,4 @@ footer:before {
 
 
 }
+
