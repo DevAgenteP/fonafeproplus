@@ -155,6 +155,11 @@ function cargarContenido(anio) {
 // ==========================================
 
 function openLightbox(index) {
+    // --- GESTIÓN DEL HISTORIAL (ANDROID BACK BUTTON) ---
+    // Agregamos un estado al historial. Esto no recarga la página.
+    // Permite que al dar "Atrás", se cierre el modal en lugar de salir de la web.
+    history.pushState({ modalActive: true }, "", "#view");
+
     indiceActual = index;
     lightbox.classList.add('active');
     generarReel(); 
@@ -237,22 +242,26 @@ function prevSlide() {
 document.getElementById('next-btn').onclick = nextSlide;
 document.getElementById('prev-btn').onclick = prevSlide;
 
+// --- CIERRE UNIFICADO (X) ---
 document.querySelector('.close-btn').onclick = () => {
-    lightbox.classList.remove('active');
-    lightboxVideo.pause();
+    // Simulamos el botón "Atrás" del navegador.
+    // Esto dispara el evento 'popstate' que se encarga de cerrar el modal.
+    // Mantiene el filtro y el scroll intactos.
+    history.back();
 };
 
+// --- TECLADO ---
 document.addEventListener('keydown', (e) => {
     if (!lightbox.classList.contains('active')) return;
     if (e.key === 'ArrowRight') nextSlide();
     if (e.key === 'ArrowLeft') prevSlide();
     if (e.key === 'Escape') {
-        lightbox.classList.remove('active');
-        lightboxVideo.pause();
+        // La tecla Escape también debe retroceder en el historial
+        history.back();
     }
 });
 
-// Swipe
+// --- SWIPE TÁCTIL ---
 let touchStartX = 0;
 let touchEndX = 0;
 
@@ -275,4 +284,30 @@ function handleSwipe() {
     if (touchEndX > touchStartX + 50) prevSlide(); 
 }
 
+
+
+
+
+
+
+
+// ==========================================
+// 6. DETECCIÓN DE NAVEGACIÓN "ATRÁS"
+// ==========================================
+window.addEventListener('popstate', function(event) {
+    // Este evento se dispara cuando el usuario presiona "Atrás" (Celular o PC)
+    // O cuando ejecutamos history.back()
+    if (lightbox.classList.contains('active')) {
+        // 1. Ocultamos visualmente
+        lightbox.classList.remove('active');
+        // 2. Pausamos video
+        lightboxVideo.pause();
+        // NOTA: No tocamos el DOM de la grilla, así que el filtro y scroll se mantienen.
+    }
+});
+
+
+
+
+// INICIAR
 generarBotones();
