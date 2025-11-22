@@ -391,4 +391,10 @@ footer:before {
     
     /* Reducción de altura del reel */
     .thumbnail-reel { height: 85px; }
+
+    /* Reducción de texto copyright en móvil */
+    .copyright {
+        font-size: 0.75rem;
+    }
+
 }
