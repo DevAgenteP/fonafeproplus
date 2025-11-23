@@ -430,9 +430,15 @@ footer:before {
     transition: opacity 0.3s ease;
 }
 
-/* Ajuste de la imagen para que el zoom sea fluido */
+/* AJUSTE CLAVE PARA FLUIDEZ */
 .lightbox-img {
-    transition: transform 0.1s linear; /* Movimiento rápido para seguir el dedo */
+    /* Por defecto: Transición suave para cuando sueltas el zoom (Reset) */
+    transition: transform 0.3s ease-out; 
     transform-origin: center center;
     will-change: transform; /* Optimización de GPU */
+}
+
+/* Cuando el usuario está moviendo la foto con el dedo: SIN RETRASO */
+.lightbox.zoom-active .lightbox-img {
+    transition: none; 
 }
