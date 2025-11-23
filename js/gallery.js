@@ -2,6 +2,8 @@
 // 1. CONFIGURACIÓN
 // ==========================================
 const estructuraGaleria = {
+    '2027': { fotos: 2, videos: 1 },
+    '2026': { fotos: 3, videos: 0 },
     '2025': { fotos: 14, videos: 3 }
 };
 
@@ -28,12 +30,14 @@ let currentScale = 1;
 let startDist = 0;
 let startX = 0;
 let startY = 0;
+// Coordenadas actuales
 let translateX = 0;
 let translateY = 0;
+// Coordenadas guardadas
 let lastTranslateX = 0;
 let lastTranslateY = 0;
 
-// Variable crítica para evitar el salto de foto al salir del zoom
+// Bandera para enfriamiento (evita saltos al soltar zoom)
 let zoomCooldown = false; 
 
 // ==========================================
@@ -167,7 +171,7 @@ function generarReel() {
         thumb.className = 'reel-thumb';
         thumb.id = `thumb-${item.index}`;
         thumb.onclick = (e) => {
-            e.stopPropagation(); // Detener propagación para proteger el reel
+            e.stopPropagation(); 
             indiceActual = item.index;
             updateLightboxView(false); 
         };
@@ -176,7 +180,7 @@ function generarReel() {
 }
 
 // ==========================================
-// 5. MOTOR DE ZOOM & GESTOS (CORREGIDO)
+// 5. MOTOR DE ZOOM CON LÍMITES
 // ==========================================
 
 function getDistance(touches) {
@@ -194,12 +198,13 @@ function resetZoom() {
     lastTranslateY = 0;
     isZooming = false;
     
-    // Quitamos el modo inmersivo para que vuelvan los controles
+    // Quitamos el modo inmersivo
     lightbox.classList.remove('zoom-active');
+    
+    // Reset visual
     lightboxImg.style.transform = `translate(0px, 0px) scale(1)`;
     
-    // PROTECCIÓN: Activamos un escudo por 300ms
-    // Esto evita que el "soltar el zoom" se interprete como "cambiar foto"
+    // Cooldown para evitar swipes accidentales
     zoomCooldown = true;
     setTimeout(() => { zoomCooldown = false; }, 300);
 }
@@ -208,89 +213,101 @@ function resetZoom() {
 let touchStartX = 0;
 let touchEndX = 0;
 
-// 1. TOUCH START
 lightbox.addEventListener('touchstart', (e) => {
-    // PROTECCIÓN DEL REEL: Si tocas el reel, anulamos todo el sistema de gestos global
+    // Protección: Si tocamos controles, no hacemos gestos de imagen
     if (e.target.closest('.thumbnail-reel') || e.target.closest('.nav-btn') || e.target.closest('.close-btn')) {
-        touchStartX = null; // Anulamos swipe
+        touchStartX = null; 
         return;
     }
 
-    // A. PINCH (ZOOM) DETECTADO
+    // A. PINCH (2 DEDOS)
     if (e.touches.length === 2) {
         isZooming = true;
         startDist = getDistance(e.touches);
-        lightbox.classList.add('zoom-active'); // Entrar en modo inmersivo
+        lightbox.classList.add('zoom-active'); 
         return;
     }
 
-    // B. PAN (MOVER FOTO CON ZOOM)
+    // B. PAN (1 DEDO CON ZOOM)
     if (currentScale > 1 && e.touches.length === 1) {
         startX = e.touches[0].pageX;
         startY = e.touches[0].pageY;
         return;
     }
 
-    // C. SWIPE NORMAL (SOLO SI NO HAY ZOOM Y NO ESTAMOS EN COOLDOWN)
+    // C. SWIPE NORMAL
     if (currentScale === 1 && !zoomCooldown) {
         touchStartX = e.changedTouches[0].screenX;
     }
 }, {passive: false});
 
-// 2. TOUCH MOVE
 lightbox.addEventListener('touchmove', (e) => {
-    if (touchStartX === null) return; // Si anulamos en start, ignoramos move
+    if (touchStartX === null) return; 
     
-    // A. LOGICA DE ZOOM (PINCH)
+    // A. ZOOM (PINCH)
     if (isZooming && e.touches.length === 2) {
-        e.preventDefault();
+        e.preventDefault(); 
         const newDist = getDistance(e.touches);
         const scaleChange = newDist / startDist;
         
         let newScale = currentScale * scaleChange;
-        if (newScale < 1) newScale = 1; // No permitir achicar menos del original
-        if (newScale > 4) newScale = 4; // Límite máximo
+        if (newScale < 1) newScale = 1; 
+        if (newScale > 4) newScale = 4; 
 
         lightboxImg.style.transform = `translate(${translateX}px, ${translateY}px) scale(${newScale})`;
         return; 
     }
 
-    // B. LOGICA DE PAN (MOVERSE DENTRO DEL ZOOM)
+    // B. PAN (MOVER CON LÍMITES)
     if (currentScale > 1 && e.touches.length === 1) {
-        e.preventDefault();
+        e.preventDefault(); 
+        
         const x = e.touches[0].pageX;
         const y = e.touches[0].pageY;
+        
         const deltaX = x - startX;
         const deltaY = y - startY;
 
-        translateX = lastTranslateX + deltaX;
-        translateY = lastTranslateY + deltaY;
+        let nextX = lastTranslateX + deltaX;
+        let nextY = lastTranslateY + deltaY;
+
+        // --- CÁLCULO DE LÍMITES (CLAMPING) ---
+        const boundsX = (window.innerWidth * currentScale - window.innerWidth) / 2;
+        const boundsY = (window.innerHeight * currentScale - window.innerHeight) / 2;
+
+        const limitX = boundsX > 0 ? boundsX : 0;
+        const limitY = boundsY > 0 ? boundsY : 0;
+
+        if (nextX > limitX) nextX = limitX;
+        if (nextX < -limitX) nextX = -limitX;
+        
+        if (nextY > limitY) nextY = limitY;
+        if (nextY < -limitY) nextY = -limitY;
+
+        translateX = nextX;
+        translateY = nextY;
 
         lightboxImg.style.transform = `translate(${translateX}px, ${translateY}px) scale(${currentScale})`;
     }
 
 }, {passive: false});
 
-// 3. TOUCH END
 lightbox.addEventListener('touchend', (e) => {
     if (touchStartX === null) return;
 
-    // FINALIZAR ZOOM (PINCH)
+    // FINALIZAR PINCH
     if (isZooming && e.touches.length < 2) {
-        // Calculamos la escala final aproximada
         const style = window.getComputedStyle(lightboxImg);
         const matrix = new DOMMatrix(style.transform);
-        currentScale = matrix.a;
+        currentScale = matrix.a; 
 
-        // LOGICA CRÍTICA: ¿Nos quedamos con zoom o salimos?
-        // Si el usuario soltó y la escala es casi 1 (o menos), RESTAURAMOS.
+        // SI EL ZOOM ES MUY PEQUEÑO, SALIR
         if (currentScale < 1.1) {
-            resetZoom(); // Esto activa el zoomCooldown
+            resetZoom();
         } else {
-            // Si sigue con zoom, guardamos el estado actual
             startDist = 0;
+            isZooming = false;
         }
-        // No ponemos isZooming = false aquí para permitir el Pan posterior si quedó con zoom
     }
 
     // FINALIZAR PAN
@@ -299,7 +316,7 @@ lightbox.addEventListener('touchend', (e) => {
         lastTranslateY = translateY;
     }
 
-    // FINALIZAR SWIPE (SOLO SI NO HAY ZOOM Y NO ESTAMOS EN COOLDOWN)
+    // FINALIZAR SWIPE NORMAL
     if (currentScale === 1 && !isZooming && !zoomCooldown) {
         touchEndX = e.changedTouches[0].screenX;
         handleSwipe();
@@ -342,7 +359,6 @@ document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') history.back();
 });
 
-// MANEJO DEL GESTO ATRÁS (ANDROID)
 window.addEventListener('popstate', function(event) {
     if (lightbox.classList.contains('active')) {
         lightbox.classList.remove('active');
