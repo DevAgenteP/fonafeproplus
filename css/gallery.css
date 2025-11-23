@@ -403,3 +403,36 @@ footer:before {
     }
 
 }
+
+
+
+
+
+
+
+
+/* =========================================
+   9. ESTADOS DE ZOOM (Modo Inmersivo)
+   ========================================= */
+
+/* Cuando el modo zoom está activo */
+.lightbox.zoom-active {
+    background-color: #000 !important; /* Fondo negro total */
+}
+
+/* Ocultar distracciones suavemente */
+.lightbox.zoom-active .thumbnail-reel,
+.lightbox.zoom-active .nav-btn,
+.lightbox.zoom-active .close-btn,
+.lightbox.zoom-active .lightbox-caption {
+    opacity: 0;
+    pointer-events: none; /* Evita clics accidentales */
+    transition: opacity 0.3s ease;
+}
+
+/* Ajuste de la imagen para que el zoom sea fluido */
+.lightbox-img {
+    transition: transform 0.1s linear; /* Movimiento rápido para seguir el dedo */
+    transform-origin: center center;
+    will-change: transform; /* Optimización de GPU */
+}
