@@ -2,20 +2,11 @@
 // 1. CONFIGURACIÓN
 // ==========================================
 const estructuraGaleria = {
-    '2027': { fotos: 2, videos: 1 },
-    '2026': { fotos: 3, videos: 0 },
     '2025': { fotos: 14, videos: 3 }
 };
 
-// RUTA AJUSTADA
+// RUTA AJUSTADA: pages -> raiz -> images
 const RUTA_BASE = '../images/gallery/'; 
-
-
-
-
-
-
-
 
 // ==========================================
 // 2. REFERENCIAS DOM & ESTADO
@@ -31,7 +22,7 @@ const reelContainer = document.getElementById('thumbnail-reel');
 let mediaListActual = []; 
 let indiceActual = 0; 
 
-// ESTADO DEL ZOOM
+// --- ESTADO DEL ZOOM Y GESTOS ---
 let isZooming = false;
 let currentScale = 1;
 let startDist = 0;
@@ -42,12 +33,8 @@ let translateY = 0;
 let lastTranslateX = 0;
 let lastTranslateY = 0;
 
-
-
-
-
-
-
+// Variable crítica para evitar el salto de foto al salir del zoom
+let zoomCooldown = false; 
 
 // ==========================================
 // 3. GENERACIÓN DE CONTENIDO
@@ -81,9 +68,6 @@ function cargarContenido(anio) {
     const datos = estructuraGaleria[anio];
     let globalIndex = 0; 
 
-
-
-
     // 1. VIDEOS
     for (let j = 1; j <= datos.videos; j++) {
         const num = j.toString().padStart(3, '0');
@@ -112,9 +96,6 @@ function cargarContenido(anio) {
         globalIndex++; 
     }
 
-
-
-
     // 2. FOTOS
     for (let i = 1; i <= datos.fotos; i++) {
         const num = i.toString().padStart(3, '0');
@@ -134,13 +115,6 @@ function cargarContenido(anio) {
     }
 }
 
-
-
-
-
-
-
-
 // ==========================================
 // 4. LÓGICA LIGHTBOX & REEL
 // ==========================================
@@ -150,7 +124,7 @@ function openLightbox(index) {
     indiceActual = index;
     lightbox.classList.add('active');
     
-    resetZoom(); // Asegurar que empieza sin zoom
+    resetZoom(); 
     generarReel(); 
     updateLightboxView(true); 
 }
@@ -158,11 +132,10 @@ function openLightbox(index) {
 function updateLightboxView(autoScrollReel) {
     const media = mediaListActual[indiceActual];
     
-    // Reset de elementos
     lightboxImg.style.display = 'none';
     lightboxVideo.style.display = 'none';
     lightboxVideo.pause(); 
-    resetZoom(); // Resetear zoom al cambiar de foto
+    resetZoom(); 
 
     if (media.type === 'image') {
         lightboxImg.src = media.src;
@@ -193,7 +166,8 @@ function generarReel() {
         
         thumb.className = 'reel-thumb';
         thumb.id = `thumb-${item.index}`;
-        thumb.onclick = () => {
+        thumb.onclick = (e) => {
+            e.stopPropagation(); // Detener propagación para proteger el reel
             indiceActual = item.index;
             updateLightboxView(false); 
         };
@@ -201,15 +175,8 @@ function generarReel() {
     });
 }
 
-
-
-
-
-
-
-
 // ==========================================
-// 5. MOTOR DE ZOOM & GESTOS TÁCTILES
+// 5. MOTOR DE ZOOM & GESTOS (CORREGIDO)
 // ==========================================
 
 function getDistance(touches) {
@@ -226,62 +193,71 @@ function resetZoom() {
     lastTranslateX = 0;
     lastTranslateY = 0;
     isZooming = false;
-    lightbox.classList.remove('zoom-active'); // Muestra el reel de nuevo
+    
+    // Quitamos el modo inmersivo para que vuelvan los controles
+    lightbox.classList.remove('zoom-active');
     lightboxImg.style.transform = `translate(0px, 0px) scale(1)`;
+    
+    // PROTECCIÓN: Activamos un escudo por 300ms
+    // Esto evita que el "soltar el zoom" se interprete como "cambiar foto"
+    zoomCooldown = true;
+    setTimeout(() => { zoomCooldown = false; }, 300);
 }
 
-// EVENTOS TÁCTILES EN EL LIGHTBOX
+// --- GESTOS TÁCTILES ---
 let touchStartX = 0;
 let touchEndX = 0;
 
+// 1. TOUCH START
 lightbox.addEventListener('touchstart', (e) => {
-    // Ignorar si tocamos el reel o controles
-    if (e.target.closest('.thumbnail-reel') || e.target.closest('.nav-btn') || e.target.closest('.close-btn')) return;
-
-    // 1. DETECCIÓN DE PINCH (2 DEDOS)
-    if (e.touches.length === 2) {
-        isZooming = true;
-        startDist = getDistance(e.touches);
-        // Entramos en modo inmersivo
-        lightbox.classList.add('zoom-active');
+    // PROTECCIÓN DEL REEL: Si tocas el reel, anulamos todo el sistema de gestos global
+    if (e.target.closest('.thumbnail-reel') || e.target.closest('.nav-btn') || e.target.closest('.close-btn')) {
+        touchStartX = null; // Anulamos swipe
         return;
     }
 
-    // 2. DETECCIÓN DE PAN (MOVER FOTO ZOOMED)
+    // A. PINCH (ZOOM) DETECTADO
+    if (e.touches.length === 2) {
+        isZooming = true;
+        startDist = getDistance(e.touches);
+        lightbox.classList.add('zoom-active'); // Entrar en modo inmersivo
+        return;
+    }
+
+    // B. PAN (MOVER FOTO CON ZOOM)
     if (currentScale > 1 && e.touches.length === 1) {
         startX = e.touches[0].pageX;
         startY = e.touches[0].pageY;
         return;
     }
 
-    // 3. DETECCIÓN DE SWIPE (SOLO SI NO HAY ZOOM)
-    if (currentScale === 1) {
+    // C. SWIPE NORMAL (SOLO SI NO HAY ZOOM Y NO ESTAMOS EN COOLDOWN)
+    if (currentScale === 1 && !zoomCooldown) {
         touchStartX = e.changedTouches[0].screenX;
     }
 }, {passive: false});
 
+// 2. TOUCH MOVE
 lightbox.addEventListener('touchmove', (e) => {
-    if (e.target.closest('.thumbnail-reel')) return;
-    e.preventDefault(); // Prevenir scroll nativo y comportamientos raros
-
-    // LÓGICA DE ZOOM (PINCH)
+    if (touchStartX === null) return; // Si anulamos en start, ignoramos move
+    
+    // A. LOGICA DE ZOOM (PINCH)
     if (isZooming && e.touches.length === 2) {
+        e.preventDefault();
         const newDist = getDistance(e.touches);
         const scaleChange = newDist / startDist;
         
-        // Limitamos el zoom (Min 1x, Max 4x)
         let newScale = currentScale * scaleChange;
-        if (newScale < 1) newScale = 1;
-        if (newScale > 4) newScale = 4;
+        if (newScale < 1) newScale = 1; // No permitir achicar menos del original
+        if (newScale > 4) newScale = 4; // Límite máximo
 
         lightboxImg.style.transform = `translate(${translateX}px, ${translateY}px) scale(${newScale})`;
-        
-        // Actualizamos para el siguiente frame pero no guardamos todavía
         return; 
     }
 
-    // LÓGICA DE PAN (MOVER IMAGEN)
+    // B. LOGICA DE PAN (MOVERSE DENTRO DEL ZOOM)
     if (currentScale > 1 && e.touches.length === 1) {
+        e.preventDefault();
         const x = e.touches[0].pageX;
         const y = e.touches[0].pageY;
         const deltaX = x - startX;
@@ -295,24 +271,26 @@ lightbox.addEventListener('touchmove', (e) => {
 
 }, {passive: false});
 
+// 3. TOUCH END
 lightbox.addEventListener('touchend', (e) => {
-    // FINALIZAR PINCH
+    if (touchStartX === null) return;
+
+    // FINALIZAR ZOOM (PINCH)
     if (isZooming && e.touches.length < 2) {
-        // Recalculamos la escala final basada en el transform actual
-        // Nota: Simplificación para mantener el estado. 
-        // Si soltamos, guardamos la escala actual aproximada
+        // Calculamos la escala final aproximada
         const style = window.getComputedStyle(lightboxImg);
         const matrix = new DOMMatrix(style.transform);
-        currentScale = matrix.a; // Obtener escala X
+        currentScale = matrix.a;
 
-        // Si el zoom es menor a 1.1, reseteamos todo (Salimos del modo inmersivo)
+        // LOGICA CRÍTICA: ¿Nos quedamos con zoom o salimos?
+        // Si el usuario soltó y la escala es casi 1 (o menos), RESTAURAMOS.
         if (currentScale < 1.1) {
-            resetZoom();
+            resetZoom(); // Esto activa el zoomCooldown
         } else {
-            // Nos quedamos en modo zoom
+            // Si sigue con zoom, guardamos el estado actual
             startDist = 0;
         }
-        // isZooming = false; // No lo apagamos del todo para permitir Pan posterior
+        // No ponemos isZooming = false aquí para permitir el Pan posterior si quedó con zoom
     }
 
     // FINALIZAR PAN
@@ -321,22 +299,15 @@ lightbox.addEventListener('touchend', (e) => {
         lastTranslateY = translateY;
     }
 
-    // FINALIZAR SWIPE (SOLO SI NO HAY ZOOM)
-    if (currentScale === 1 && !isZooming) {
+    // FINALIZAR SWIPE (SOLO SI NO HAY ZOOM Y NO ESTAMOS EN COOLDOWN)
+    if (currentScale === 1 && !isZooming && !zoomCooldown) {
         touchEndX = e.changedTouches[0].screenX;
         handleSwipe();
     }
 });
 
-
-
-
-
-
-
-
 // ==========================================
-// 6. NAVEGACIÓN ESTÁNDAR
+// 6. NAVEGACIÓN
 // ==========================================
 
 function nextSlide() {
@@ -352,12 +323,11 @@ function prevSlide() {
 }
 
 function handleSwipe() {
-    // Umbral de 50px
+    if (!touchStartX || !touchEndX) return;
     if (touchEndX < touchStartX - 50) nextSlide(); 
     if (touchEndX > touchStartX + 50) prevSlide(); 
 }
 
-// Botones y Teclado
 document.getElementById('next-btn').onclick = nextSlide;
 document.getElementById('prev-btn').onclick = prevSlide;
 
@@ -372,15 +342,13 @@ document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') history.back();
 });
 
-// Manejo de Historial (Atrás)
+// MANEJO DEL GESTO ATRÁS (ANDROID)
 window.addEventListener('popstate', function(event) {
     if (lightbox.classList.contains('active')) {
         lightbox.classList.remove('active');
         lightboxVideo.pause();
-        resetZoom(); // Limpiar zoom al salir
+        resetZoom(); 
     }
 });
 
-
-// INICIAR
 generarBotones();
