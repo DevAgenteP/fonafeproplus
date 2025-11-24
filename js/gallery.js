@@ -7,7 +7,6 @@ const estructuraGaleria = {
     '2025': { fotos: 14, videos: 3 }
 };
 
-// RUTA AJUSTADA: pages -> raiz -> images
 const RUTA_BASE = '../images/gallery/'; 
 
 // ==========================================
@@ -24,20 +23,17 @@ const reelContainer = document.getElementById('thumbnail-reel');
 let mediaListActual = []; 
 let indiceActual = 0; 
 
-// --- ESTADO DEL ZOOM Y GESTOS ---
+// --- ESTADO DEL ZOOM ---
 let isZooming = false;
 let currentScale = 1;
 let startDist = 0;
 let startX = 0;
 let startY = 0;
-// Coordenadas actuales
 let translateX = 0;
 let translateY = 0;
-// Coordenadas guardadas
 let lastTranslateX = 0;
 let lastTranslateY = 0;
 
-// Bandera para enfriamiento (evita saltos al soltar zoom)
 let zoomCooldown = false; 
 
 // ==========================================
@@ -180,7 +176,7 @@ function generarReel() {
 }
 
 // ==========================================
-// 5. MOTOR DE ZOOM CON LÍMITES
+// 5. MOTOR DE ZOOM (FIX: LÍMITES REALES)
 // ==========================================
 
 function getDistance(touches) {
@@ -198,13 +194,9 @@ function resetZoom() {
     lastTranslateY = 0;
     isZooming = false;
     
-    // Quitamos el modo inmersivo
     lightbox.classList.remove('zoom-active');
-    
-    // Reset visual
     lightboxImg.style.transform = `translate(0px, 0px) scale(1)`;
     
-    // Cooldown para evitar swipes accidentales
     zoomCooldown = true;
     setTimeout(() => { zoomCooldown = false; }, 300);
 }
@@ -214,13 +206,11 @@ let touchStartX = 0;
 let touchEndX = 0;
 
 lightbox.addEventListener('touchstart', (e) => {
-    // Protección: Si tocamos controles, no hacemos gestos de imagen
     if (e.target.closest('.thumbnail-reel') || e.target.closest('.nav-btn') || e.target.closest('.close-btn')) {
         touchStartX = null; 
         return;
     }
 
-    // A. PINCH (2 DEDOS)
     if (e.touches.length === 2) {
         isZooming = true;
         startDist = getDistance(e.touches);
@@ -228,14 +218,12 @@ lightbox.addEventListener('touchstart', (e) => {
         return;
     }
 
-    // B. PAN (1 DEDO CON ZOOM)
     if (currentScale > 1 && e.touches.length === 1) {
         startX = e.touches[0].pageX;
         startY = e.touches[0].pageY;
         return;
     }
 
-    // C. SWIPE NORMAL
     if (currentScale === 1 && !zoomCooldown) {
         touchStartX = e.changedTouches[0].screenX;
     }
@@ -258,26 +246,46 @@ lightbox.addEventListener('touchmove', (e) => {
         return; 
     }
 
-    // B. PAN (MOVER CON LÍMITES)
+    // B. PAN (MOVER CON CÁLCULO DE LÍMITES REALES)
     if (currentScale > 1 && e.touches.length === 1) {
         e.preventDefault(); 
         
         const x = e.touches[0].pageX;
         const y = e.touches[0].pageY;
-        
         const deltaX = x - startX;
         const deltaY = y - startY;
 
         let nextX = lastTranslateX + deltaX;
         let nextY = lastTranslateY + deltaY;
 
-        // --- CÁLCULO DE LÍMITES (CLAMPING) ---
-        const boundsX = (window.innerWidth * currentScale - window.innerWidth) / 2;
-        const boundsY = (window.innerHeight * currentScale - window.innerHeight) / 2;
+        // --- AQUÍ ESTÁ LA MAGIA DE LÍMITES ---
+        // 1. Calculamos dimensiones reales de la imagen renderizada
+        const imgRatio = lightboxImg.naturalWidth / lightboxImg.naturalHeight;
+        const winRatio = window.innerWidth / window.innerHeight;
+        
+        let actualW, actualH;
 
+        // "object-fit: contain" significa que la imagen se ajusta al ancho o al alto
+        if (imgRatio > winRatio) {
+            // Imagen apaisada (más ancha que la pantalla relativa) -> Ancho manda
+            actualW = window.innerWidth;
+            actualH = actualW / imgRatio;
+        } else {
+            // Imagen vertical (más alta que la pantalla relativa) -> Alto manda
+            actualH = window.innerHeight;
+            actualW = actualH * imgRatio;
+        }
+
+        // 2. Calculamos cuánto "sobra" de imagen fuera de la pantalla al hacer zoom
+        // (TamañoReal * Zoom - TamañoPantalla) / 2
+        const boundsX = (actualW * currentScale - window.innerWidth) / 2;
+        const boundsY = (actualH * currentScale - window.innerHeight) / 2;
+
+        // 3. Definimos los límites (Si bounds es negativo, significa que la imagen es chica, límite = 0)
         const limitX = boundsX > 0 ? boundsX : 0;
         const limitY = boundsY > 0 ? boundsY : 0;
 
+        // 4. Aplicamos restricción estricta
         if (nextX > limitX) nextX = limitX;
         if (nextX < -limitX) nextX = -limitX;
         
@@ -301,7 +309,7 @@ lightbox.addEventListener('touchend', (e) => {
         const matrix = new DOMMatrix(style.transform);
         currentScale = matrix.a; 
 
-        // SI EL ZOOM ES MUY PEQUEÑO, SALIR
+        // Umbral para salir del zoom
         if (currentScale < 1.1) {
             resetZoom();
         } else {
@@ -316,7 +324,7 @@ lightbox.addEventListener('touchend', (e) => {
         lastTranslateY = translateY;
     }
 
-    // FINALIZAR SWIPE NORMAL
+    // FINALIZAR SWIPE
     if (currentScale === 1 && !isZooming && !zoomCooldown) {
         touchEndX = e.changedTouches[0].screenX;
         handleSwipe();
