@@ -2,9 +2,7 @@
 // 1. CONFIGURACIÓN
 // ==========================================
 const estructuraGaleria = {
-    '2027': { fotos: 2, videos: 1 },
-    '2026': { fotos: 3, videos: 0 },
-    '2025': { fotos: 14, videos: 3 }
+    '2025': { fotos: 100, videos: 2 }
 };
 
 const RUTA_BASE = '../images/gallery/'; 
